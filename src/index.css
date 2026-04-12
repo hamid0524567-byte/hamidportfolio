@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --color-accent: #ffffff;
+  --color-primary-green: #065f46;
+  --color-dark-green: #064e3b;
+}
+
+@layer base {
+  body {
+    @apply font-sans text-white;
+    background: linear-gradient(135deg, #065f46 0%, #022c22 100%);
+    background-attachment: fixed;
+    position: relative;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: 
+      linear-gradient(to right, rgba(255,255,255,0.01) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.01) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+.gradient-bg {
+  background: linear-gradient(135deg, #064e3b 0%, #022c22 100%);
+}
+
+.glass-card {
+  @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl;
+}
+
+@keyframes morph {
+  0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+  100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+}
+
+.animate-morph {
+  animation: morph 8s ease-in-out infinite;
+}

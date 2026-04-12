@@ -1,0 +1,112 @@
+{
+  "entities": {
+    "projects": {
+      "title": "Portfolio Project",
+      "description": "A project in the portfolio gallery",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "Project title" },
+        "description": { "type": "string", "description": "Project description" },
+        "category": { "type": "string", "enum": ["Design", "Video"], "description": "Project category" },
+        "driveFileId": { "type": "string", "description": "Google Drive file ID for the main asset" },
+        "thumbnailId": { "type": "string", "description": "Google Drive file ID for the thumbnail" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation timestamp" },
+        "order": { "type": "number", "description": "Display order" }
+      },
+      "required": ["title", "category", "driveFileId", "createdAt"]
+    },
+    "experience": {
+      "title": "Work Experience",
+      "description": "A work experience entry",
+      "type": "object",
+      "properties": {
+        "company": { "type": "string", "description": "Company name" },
+        "role": { "type": "string", "description": "Job role" },
+        "period": { "type": "string", "description": "Time period (e.g., 2022 - Present)" },
+        "description": { "type": "string", "description": "Job description" },
+        "order": { "type": "number", "description": "Display order" }
+      },
+      "required": ["company", "role", "period"]
+    },
+    "testimonials": {
+      "title": "Client Testimonial",
+      "description": "A testimonial from a client",
+      "type": "object",
+      "properties": {
+        "clientName": { "type": "string", "description": "Client's name" },
+        "content": { "type": "string", "description": "Testimonial content" },
+        "rating": { "type": "number", "description": "Rating out of 5" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["clientName", "content", "rating"]
+    },
+    "users": {
+      "title": "User Profile",
+      "description": "User data and roles",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "format": "email" },
+        "role": { "type": "string", "enum": ["admin", "user"] }
+      },
+      "required": ["email", "role"]
+    },
+    "siteSettings": {
+      "title": "Site Settings",
+      "description": "Dynamic content for hero, about, and contact sections",
+      "type": "object",
+      "properties": {
+        "heroName": { "type": "string" },
+        "heroRole": { "type": "string" },
+        "heroDescription": { "type": "string" },
+        "heroImageId": { "type": "string" },
+        "aboutText": { "type": "string" },
+        "aboutStats": { "type": "array", "items": { "type": "object", "properties": { "label": { "type": "string" }, "value": { "type": "string" } } } },
+        "contactEmail": { "type": "string" },
+        "contactPhone": { "type": "string" },
+        "whatsappNumber": { "type": "string" },
+        "facebookUrl": { "type": "string" },
+        "instagramUrl": { "type": "string" }
+      }
+    },
+    "messages": {
+      "title": "Contact Message",
+      "description": "Messages sent from the contact form",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "subject": { "type": "string" },
+        "message": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["new", "read", "replied"] }
+      },
+      "required": ["name", "email", "message"]
+    }
+  },
+  "firestore": {
+    "/siteSettings/{settingId}": {
+      "schema": "siteSettings",
+      "description": "Global site settings"
+    },
+    "/messages/{messageId}": {
+      "schema": "messages",
+      "description": "Contact form messages"
+    },
+    "/projects/{projectId}": {
+      "schema": "projects",
+      "description": "Portfolio projects collection"
+    },
+    "/experience/{expId}": {
+      "schema": "experience",
+      "description": "Work experience timeline"
+    },
+    "/testimonials/{testId}": {
+      "schema": "testimonials",
+      "description": "Client testimonials"
+    },
+    "/users/{userId}": {
+      "schema": "users",
+      "description": "User profiles for admin access"
+    }
+  }
+}

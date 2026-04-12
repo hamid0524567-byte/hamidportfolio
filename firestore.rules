@@ -1,0 +1,67 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    // Collection: projects
+    // Fields: category (string), driveFileId (string), createdAt (timestamp), order (number)
+    //
+    // Collection: experience
+    // Fields: company (string), role (string), period (string), description (string), order (number)
+    //
+    // Collection: users
+    // Fields: email (string), role (string)
+    // ===============================================================
+
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && 
+         (request.auth.token.email == "hamid0524567@gmail.com" || request.auth.uid == "tQwqCI5xVtUK0h752KdXhQMxbOz1") && 
+         request.auth.token.email_verified == true;
+    }
+
+    function isValidProject(data) {
+      return data.category in ['Design', 'Video'] &&
+             data.driveFileId is string &&
+             data.driveFileId.size() > 0;
+    }
+
+    function isValidExperience(data) {
+      return data.company is string && data.company.size() > 0 &&
+             data.role is string && data.role.size() > 0 &&
+             data.period is string;
+    }
+
+    // Rules
+    match /siteSettings/{settingId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /messages/{messageId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /projects/{projectId} {
+      allow read: if true;
+      allow write: if isAdmin() && isValidProject(request.resource.data);
+    }
+
+    match /experience/{expId} {
+      allow read: if true;
+      allow write: if isAdmin() && isValidExperience(request.resource.data);
+    }
+
+    match /users/{userId} {
+      allow read: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+      allow create: if isAuthenticated() && request.auth.uid == userId && request.resource.data.role == 'user';
+      allow update: if isAdmin();
+    }
+  }
+}
