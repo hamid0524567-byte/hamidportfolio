@@ -108,7 +108,8 @@ export default function AdminPanel() {
       projectForm.reset();
       setIsAdding(false);
       setEditingId(null);
-    } catch (error) {
+    } catch (error: any) {
+      toast.error("Failed to save project: " + error.message);
       handleFirestoreError(error, OperationType.WRITE, "projects");
     }
   };
@@ -125,7 +126,8 @@ export default function AdminPanel() {
       experienceForm.reset();
       setIsAdding(false);
       setEditingId(null);
-    } catch (error) {
+    } catch (error: any) {
+      toast.error("Failed to save experience: " + error.message);
       handleFirestoreError(error, OperationType.WRITE, "experience");
     }
   };
@@ -148,11 +150,12 @@ export default function AdminPanel() {
   }, [settingsForm.formState.errors]);
 
   const deleteItem = async (collectionName: string, id: string) => {
-    if (!confirm(`Are you sure you want to delete this ${collectionName}?`)) return;
     try {
       await deleteDoc(doc(db, collectionName, id));
       toast.success(`${collectionName} deleted`);
-    } catch (error) {
+    } catch (error: any) {
+      console.error("Delete error:", error);
+      toast.error(`Failed to delete ${collectionName}: ${error.message}`);
       handleFirestoreError(error, OperationType.DELETE, collectionName);
     }
   };
