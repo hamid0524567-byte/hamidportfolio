@@ -7,15 +7,19 @@ import { getGoogleDriveUrl } from '../lib/utils';
 
 export default function About() {
   const [settings, setSettings] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(doc(db, "siteSettings", "main"), (snapshot) => {
       if (snapshot.exists()) {
         setSettings(snapshot.data());
       }
+      setLoading(false);
     });
     return () => unsubscribe();
   }, []);
+
+  if (loading) return null;
 
   const aboutText = settings?.aboutText || "I am a passionate Graphic Designer and Video Editor with over 4 years of combined experience. My journey started at the Alhaj Shamsul Hoque Foundation, where I honed my skills for 2 years before transitioning into a successful freelance career.";
 
@@ -27,10 +31,10 @@ export default function About() {
   ];
 
   const aboutImages = [
-    settings?.aboutImage1 ? getGoogleDriveUrl(settings.aboutImage1) : "https://picsum.photos/seed/design1/400/500",
-    settings?.aboutImage2 ? getGoogleDriveUrl(settings.aboutImage2) : "https://picsum.photos/seed/video1/400/300",
-    settings?.aboutImage3 ? getGoogleDriveUrl(settings.aboutImage3) : "https://picsum.photos/seed/video2/400/300",
-    settings?.aboutImage4 ? getGoogleDriveUrl(settings.aboutImage4) : "https://picsum.photos/seed/design2/400/500",
+    settings?.aboutImage1 ? getGoogleDriveUrl(settings.aboutImage1) : "",
+    settings?.aboutImage2 ? getGoogleDriveUrl(settings.aboutImage2) : "",
+    settings?.aboutImage3 ? getGoogleDriveUrl(settings.aboutImage3) : "",
+    settings?.aboutImage4 ? getGoogleDriveUrl(settings.aboutImage4) : "",
   ];
 
   return (

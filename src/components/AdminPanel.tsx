@@ -9,7 +9,7 @@ import * as z from 'zod';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'motion/react';
 import { signInWithPopup, signOut } from 'firebase/auth';
-import { getGoogleDriveUrl } from '../lib/utils';
+import { getGoogleDriveUrl, getThumbnailUrl } from '../lib/utils';
 
 const projectSchema = z.object({
   category: z.enum(["Design", "Video"]),
@@ -274,7 +274,7 @@ export default function AdminPanel() {
                 <div key={p.id} className="bg-white/5 rounded-3xl border border-white/10 overflow-hidden group hover:border-accent/30 transition-all">
                   <div className="aspect-video bg-black/40 relative">
                     <img 
-                      src={getGoogleDriveUrl(p.driveFileId)} 
+                      src={getThumbnailUrl(p.driveFileId)} 
                       alt="Preview" 
                       className="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-opacity"
                       referrerPolicy="no-referrer"

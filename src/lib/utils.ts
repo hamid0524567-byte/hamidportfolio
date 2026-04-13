@@ -14,6 +14,24 @@ export function formatDate(date: any) {
   });
 }
 
+export function getYouTubeId(url: string) {
+  if (!url) return null;
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : null;
+}
+
+export function getThumbnailUrl(input: string) {
+  if (!input) return "";
+  
+  const ytId = getYouTubeId(input);
+  if (ytId) {
+    return `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
+  }
+
+  return getGoogleDriveUrl(input);
+}
+
 export function getGoogleDriveUrl(input: string, type: 'image' | 'video' = 'image') {
   if (!input) return "";
   

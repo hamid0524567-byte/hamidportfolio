@@ -6,29 +6,19 @@ import { db } from '../firebase';
 
 export default function Experience() {
   const [experiences, setExperiences] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const q = query(collection(db, "experience"), orderBy("createdAt", "desc"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       setExperiences(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      setLoading(false);
     });
     return () => unsubscribe();
   }, []);
 
-  const displayExperiences = experiences.length > 0 ? experiences : [
-    {
-      company: "Freelance Designer & Editor",
-      role: "Lead Creative",
-      period: "2024 - Present",
-      description: "Working with international clients to deliver high-quality visual content, brand identities, and cinematic video productions.",
-    },
-    {
-      company: "Alhaj Shamsul Hoque Foundation",
-      role: "Graphic Designer & Video Editor",
-      period: "2022 - 2024",
-      description: "Managed all visual communications, social media assets, and documentary video editing for the foundation's charitable projects.",
-    }
-  ];
+  if (loading) return null;
+  if (experiences.length === 0) return null;
 
   return (
     <section id="experience" className="py-24 relative overflow-hidden">
@@ -43,7 +33,7 @@ export default function Experience() {
           <div className="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 h-full w-0.5 bg-white/10" />
 
           <div className="space-y-12">
-            {displayExperiences.map((exp, index) => (
+            {experiences.map((exp, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}

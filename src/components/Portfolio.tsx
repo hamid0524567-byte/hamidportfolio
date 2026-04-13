@@ -3,7 +3,7 @@ import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
 import { motion, AnimatePresence } from 'motion/react';
 import { Video, Image as ImageIcon, ExternalLink, Play, X } from 'lucide-react';
-import { getGoogleDriveUrl } from '../lib/utils';
+import { getGoogleDriveUrl, getYouTubeId, getThumbnailUrl } from '../lib/utils';
 
 export default function Portfolio() {
   const [projects, setProjects] = useState<any[]>([]);
@@ -21,12 +21,6 @@ export default function Portfolio() {
   const filteredProjects = filter === 'All' 
     ? projects 
     : projects.filter(p => p.category === filter);
-
-  const getYouTubeId = (url: string) => {
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-    const match = url?.match(regExp);
-    return (match && match[2].length === 11) ? match[2] : null;
-  };
 
   return (
     <section id="portfolio" className="py-24 relative overflow-hidden">
@@ -72,7 +66,7 @@ export default function Portfolio() {
               >
                 <div className="relative overflow-hidden">
                   <img 
-                    src={getGoogleDriveUrl(project.driveFileId)}
+                    src={getThumbnailUrl(project.driveFileId)}
                     alt="Portfolio Project"
                     className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-110"
                     referrerPolicy="no-referrer"

@@ -3,25 +3,29 @@ import { motion } from 'motion/react';
 import { ArrowRight, Video, Palette, Image as ImageIcon, PenTool, Zap, Film, Download } from 'lucide-react';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
-import { getGoogleDriveUrl } from '../lib/utils';
+import { getGoogleDriveUrl, getThumbnailUrl } from '../lib/utils';
 
 export default function Hero() {
   const [settings, setSettings] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(doc(db, "siteSettings", "main"), (snapshot) => {
       if (snapshot.exists()) {
         setSettings(snapshot.data());
       }
+      setLoading(false);
     });
     return () => unsubscribe();
   }, []);
+
+  if (loading) return null; // Prevent flicker of old defaults
 
   const heroData = {
     name: settings?.heroName || "Hamid Hossen",
     role: settings?.heroRole || "Graphic Designer & Video Editor",
     description: settings?.heroDescription || "I specialize in high-impact graphic design and cinematic video editing that tells a story.",
-    imageId: settings?.heroImageId || "hamid",
+    imageId: settings?.heroImageId || "",
     whatsapp: settings?.whatsappNumber || "8801828380707",
     cvLink: settings?.cvLink || "#"
   };
