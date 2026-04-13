@@ -25,7 +25,6 @@ export default function About() {
     { label: "Years Experience", value: settings?.yearsExperience || "4+" },
     { label: "Projects Done", value: settings?.projectsDone || "150+" },
     { label: "Happy Clients", value: settings?.happyClients || "80+" },
-    { label: "Awards Won", value: "5" },
   ];
 
   const aboutImages = [
@@ -64,7 +63,7 @@ export default function About() {
                   </div>
                   <div>
                     <h4 className="font-bold text-white">Education</h4>
-                    <p className="text-sm text-white/40">Honors Graduate, National University</p>
+                    <p className="text-sm text-white/40">BA (Hons) & MA in Islamic Studies — National University</p>
                   </div>
                 </div>
                 <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 bg-white/5 p-6 rounded-3xl border border-white/10">
